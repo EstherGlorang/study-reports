@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>민섭 학생 학습 상담 리포트</title>
+</head>
+<body>
+<button class="pdf-dl-btn" onclick="window.print()">PDF로 다운로드</button>
+<style>
+  .pdf-dl-btn { position: fixed; top: 16px; right: 16px; z-index: 9999; font-family: inherit;
+    font-size: 14px; font-weight: 700; color: #fff; background: var(--accent, #2f6f68);
+    border: none; padding: 10px 16px; border-radius: 100px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    cursor: pointer; }
+  .pdf-dl-btn:hover { background: var(--accent-strong, #24564f); }
+  @media print { .pdf-dl-btn { display: none !important; } }
+</style>
+<style>
+  :root {
+    --paper: #fbfaf7; --surface: #ffffff; --ink: #232a31; --ink-soft: #5b656e; --ink-faint: #8a939b;
+    --line: #e7e2d8; --line-strong: #d8d2c5; --accent: #2f6f68; --accent-strong: #24564f;
+    --accent-tint: #edf3f1; --gold: #9c6f24; --gold-tint: #f5efe0; --star: #c8912f;
+    --ok-bg: #e5f0e6; --ok-fg: #38784e; --eve-bg: #efe9df; --eve-fg: #8a7a5e;
+    --radius: 6px; --maxw: 812px;
+    --font-sans: 'Apple SD Gothic Neo', 'Pretendard', 'Malgun Gothic', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#14181c; --surface:#1b2127; --ink:#e8e4db; --ink-soft:#a3adb5; --ink-faint:#7b858d;
+      --line:#2b333b; --line-strong:#3a444d; --accent:#74b9ae; --accent-strong:#93cabf;
+      --accent-tint:#1a2826; --gold:#cba566; --gold-tint:#262013; --star:#d8b063;
+      --ok-bg:#1c2a20; --ok-fg:#8fc9a0; --eve-bg:#262115; --eve-fg:#c2ab7f; }
+  }
+  :root[data-theme="light"] { --paper:#fbfaf7; --surface:#ffffff; --ink:#232a31; --ink-soft:#5b656e; --ink-faint:#8a939b;
+    --line:#e7e2d8; --line-strong:#d8d2c5; --accent:#2f6f68; --accent-strong:#24564f;
+    --accent-tint:#edf3f1; --gold:#9c6f24; --gold-tint:#f5efe0; --star:#c8912f;
+    --ok-bg:#e5f0e6; --ok-fg:#38784e; --eve-bg:#efe9df; --eve-fg:#8a7a5e; }
+  :root[data-theme="dark"] { --paper:#14181c; --surface:#1b2127; --ink:#e8e4db; --ink-soft:#a3adb5; --ink-faint:#7b858d;
+    --line:#2b333b; --line-strong:#3a444d; --accent:#74b9ae; --accent-strong:#93cabf;
+    --accent-tint:#1a2826; --gold:#cba566; --gold-tint:#262013; --star:#d8b063;
+    --ok-bg:#1c2a20; --ok-fg:#8fc9a0; --eve-bg:#262115; --eve-fg:#c2ab7f; }
+
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-sans);
+    font-size:16.5px; line-height:1.78; -webkit-font-smoothing:antialiased; word-break:keep-all; }
+  .wrap { max-width:var(--maxw); margin:0 auto; padding:clamp(28px,5vw,64px) clamp(20px,5vw,56px) 96px; }
+
+  .masthead { border-top:3px solid var(--accent); padding-top:26px; }
+  .brand { font-size:12.5px; letter-spacing:0.14em; font-weight:700; color:var(--accent); margin:0 0 20px; }
+  .doc-title { font-size:clamp(27px,5.6vw,38px); font-weight:700; line-height:1.28; letter-spacing:-0.01em; margin:0 0 12px; text-wrap:balance; }
+  .doc-sub { font-size:17px; color:var(--ink-soft); margin:0 0 28px; }
+  .meta { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .meta div { background:var(--surface); padding:13px 16px; }
+  .meta dt { font-size:12px; color:var(--ink-faint); letter-spacing:0.04em; margin:0 0 3px; }
+  .meta dd { margin:0; font-size:15px; font-weight:600; }
+
+  .summary { margin-top:30px; background:var(--accent-tint); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; padding:22px 26px; }
+  .summary .label { font-size:12px; letter-spacing:0.1em; font-weight:700; color:var(--accent-strong); margin:0 0 12px; }
+  .summary p { margin:0 0 12px; color:var(--ink); }
+  .summary .first { margin:14px 0 0; padding-top:14px; border-top:1px solid var(--line-strong); font-size:15px; color:var(--ink-soft); }
+  .summary .first strong { color:var(--accent-strong); }
+
+  nav.toc { margin-top:22px; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); padding:18px 22px; }
+  nav.toc p { margin:0 0 12px; font-size:12px; letter-spacing:0.08em; color:var(--ink-faint); font-weight:700; }
+  nav.toc ol { margin:0; padding:0; list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:7px 24px; }
+  nav.toc a { color:var(--ink-soft); text-decoration:none; font-size:14.5px; display:flex; gap:9px; padding:2px 0; }
+  nav.toc a .n { color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums; }
+  nav.toc a:hover { color:var(--accent-strong); }
+
+  section { margin-top:52px; scroll-margin-top:24px; }
+  .eyebrow { display:flex; align-items:baseline; gap:10px; font-size:12.5px; letter-spacing:0.12em; color:var(--accent); font-weight:700; margin:0 0 10px; }
+  .eyebrow .num { font-variant-numeric:tabular-nums; opacity:0.7; }
+  h2 { font-size:clamp(20px,3.4vw,24px); font-weight:700; line-height:1.35; letter-spacing:-0.01em; margin:0 0 18px; padding-bottom:14px; border-bottom:1px solid var(--line); text-wrap:balance; }
+  p { margin:0 0 16px; }
+  strong { font-weight:700; color:var(--ink); }
+
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px; }
+  .card h3 { margin:0 0 12px; font-size:15px; font-weight:700; }
+  ul.clean { margin:0; padding:0; list-style:none; }
+  ul.clean li { position:relative; padding-left:16px; margin-bottom:10px; color:var(--ink-soft); }
+  ul.clean li:last-child { margin-bottom:0; }
+  ul.clean li::before { content:""; position:absolute; left:0; top:11px; width:5px; height:5px; border-radius:50%; background:var(--accent); }
+  ul.clean li strong { color:var(--ink); }
+
+  .callout { background:var(--accent-tint); border-left:3px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; padding:18px 22px; margin:22px 0 0; }
+  .callout .lead { font-weight:700; color:var(--accent-strong); margin:0 0 8px; font-size:14px; }
+  .callout p { margin:0; color:var(--ink-soft); }
+  .callout a { font-weight:700; }
+
+  .needs { display:flex; flex-direction:column; gap:14px; }
+  .need { display:grid; grid-template-columns:30px 1fr; gap:16px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px 22px; }
+  .need .idx { font-size:20px; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; line-height:1.4; }
+  .need h3 { margin:0 0 6px; font-size:15.5px; font-weight:700; }
+  .need p { margin:0; color:var(--ink-soft); font-size:15px; }
+
+  .solve { margin-top:38px; }
+  .solve > h3 { font-size:17px; margin:0 0 6px; padding-bottom:9px; border-bottom:2px solid var(--accent-tint); display:flex; gap:9px; align-items:baseline; }
+  .solve > h3 .tagn { color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums; }
+  .solve > .intro { margin:0 0 14px; color:var(--ink-soft); font-size:15px; }
+  .reco { margin-top:14px; background:var(--gold-tint); border-radius:var(--radius); padding:13px 17px; font-size:14.5px; color:var(--ink); line-height:1.7; }
+  .reco b { color:var(--gold); font-weight:700; }
+
+  .rmapwrap { overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); margin-top:16px; }
+  .rmap { display:grid; grid-template-columns:98px repeat(6,1fr); gap:1px; background:var(--line); min-width:920px; }
+  .rmap > div { background:var(--surface); padding:9px 10px; }
+  .rmap .cnr { grid-row:span 2; background:var(--accent-tint); font-size:11px; color:var(--ink-faint); display:flex; align-items:center; gap:5px; font-weight:600; }
+  .rmap .yr { background:var(--accent-tint); text-align:center; font-size:13px; font-weight:700; color:var(--accent-strong); display:flex; align-items:center; justify-content:center; }
+  .rmap .term { background:var(--accent-tint); text-align:center; font-size:11.5px; color:var(--ink-faint); font-weight:600; }
+  .rmap .lane { display:flex; flex-direction:column; justify-content:center; gap:1px; }
+  .rmap .lane .s { font-size:13px; font-weight:700; }
+  .rmap .lane .u { font-size:11px; font-weight:600; opacity:0.9; }
+  .rmap .cl { font-size:12px; color:var(--ink-soft); line-height:1.46; }
+  .rmap .mut { font-size:12px; color:var(--ink-faint); }
+  .t-math { background:var(--accent-tint) !important; } .t-math .s,.t-math .u { color:var(--accent-strong); }
+  .t-sci  { background:var(--gold-tint) !important; } .t-sci .s,.t-sci .u { color:var(--gold); }
+  .t-eng  { background:var(--eve-bg) !important; } .t-eng .s,.t-eng .u { color:var(--eve-fg); }
+  .t-adm  { background:var(--ok-bg) !important; } .t-adm .s,.t-adm .u { color:var(--ok-fg); }
+  .rmap-note { margin:10px 2px 0; font-size:13px; color:var(--ink-faint); }
+
+  .tablewrap { overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); margin-top:14px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; min-width:620px; }
+  thead th { background:var(--accent-tint); color:var(--accent-strong); text-align:left; font-weight:700; font-size:12.5px; letter-spacing:0.03em; padding:10px 14px; border-bottom:1px solid var(--line-strong); }
+  tbody td { padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--ink-soft); }
+  tbody tr:last-child td { border-bottom:none; }
+  tbody td:first-child { color:var(--ink); font-weight:600; }
+
+  .classlist { display:flex; flex-direction:column; gap:14px; margin-top:16px; }
+  .classcard { display:flex; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .classcard .thumb { flex:0 0 188px; width:188px; align-self:stretch; object-fit:contain; background:var(--accent-tint); padding:10px; box-sizing:border-box; }
+  .classcard .body { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; padding:16px 20px; }
+  .newbadge { display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:100px; background:var(--gold-tint); color:var(--gold); }
+  .classcard .role { font-size:11.5px; letter-spacing:0.06em; font-weight:700; color:var(--accent); margin:0 0 6px; }
+  .classcard h4 { margin:0 0 9px; font-size:15.5px; font-weight:700; line-height:1.42; letter-spacing:-0.01em; }
+  .metaline { display:flex; flex-wrap:wrap; align-items:center; gap:7px 12px; margin:0 0 8px; font-size:13px; color:var(--ink-soft); }
+  .teacher { font-weight:600; color:var(--ink); }
+  .rating { display:inline-flex; align-items:center; gap:4px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .rating .starglyph { color:var(--star); font-size:12px; }
+  .rating .rc { font-weight:400; color:var(--ink-faint); }
+  .mut2 { color:var(--ink-faint); font-weight:400; font-size:11.5px; white-space:nowrap; }
+  .stats { font-size:12.5px; color:var(--ink-faint); }
+  .sched { margin:0 0 10px; font-size:12.5px; color:var(--ink-soft); display:flex; gap:6px; align-items:baseline; }
+  .sched b { color:var(--accent-strong); font-weight:700; font-size:11.5px; letter-spacing:0.02em; flex:none; }
+  .slot { display:inline-block; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:100px; }
+  .slot.ok { background:var(--ok-bg); color:var(--ok-fg); }
+  .slot.req { background:var(--eve-bg); color:var(--eve-fg); }
+  .classcard .feat { margin:4px 0 14px; font-size:14px; color:var(--ink-soft); line-height:1.62; }
+  .classcard .btnrow { margin-top:auto; }
+  .btn { display:inline-block; text-decoration:none; font-size:13.5px; font-weight:700; color:#fff; background:var(--accent); padding:8px 18px; border-radius:100px; }
+  .btn:hover { background:var(--accent-strong); }
+
+  .nextstep { background:var(--accent); border-radius:var(--radius); padding:26px 28px; }
+  .nextstep .eyebrow { color:rgba(255,255,255,0.85); }
+  .nextstep h2 { color:#fff; border-bottom-color:rgba(255,255,255,0.22); }
+  .nextstep p { color:rgba(255,255,255,0.92); }
+  .nextstep p:last-child { margin-bottom:0; }
+  .nextstep strong { color:#fff; }
+  .nextstep a { color:#fff; font-weight:700; }
+
+  footer { margin-top:56px; padding-top:22px; border-top:1px solid var(--line); color:var(--ink-faint); font-size:13px; }
+  footer p { margin:0 0 4px; }
+  a { color:var(--accent-strong); }
+
+  @media (max-width:640px) {
+    .cols { grid-template-columns:1fr; }
+    .meta { grid-template-columns:1fr; }
+    nav.toc ol { grid-template-columns:1fr; }
+    .classcard { flex-direction:column; }
+    .classcard .thumb { flex:none; width:100%; height:auto; aspect-ratio:16/9; border-bottom:1px solid var(--line); }
+    .classcard .body { padding:14px 16px; }
+  }
+  @media (prefers-reduced-motion:no-preference) { a,.btn { transition:color .15s ease, background .15s ease; } }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="brand">꾸그 학습 상담 리포트</p>
+    <h1 class="doc-title">민섭 학생 학습 상담 리포트</h1>
+    <p class="doc-sub">영재고·과학고 준비를 위한 수학·과학 심화와 영어 문법 정리 방안</p>
+    <dl class="meta">
+      <div><dt>대상</dt><dd>이병화 학부모님 (민섭이)</dd></div>
+      <div><dt>학년</dt><dd>중학교 1학년</dd></div>
+      <div><dt>상담사</dt><dd>김예은 전문 학습 상담사</dd></div>
+      <div><dt>발송일</dt><dd>2026년 7월 15일</dd></div>
+    </dl>
+  </header>
+
+  <div class="summary">
+    <p class="label">제안 요약</p>
+    <p>민섭이는 영재고·과학고를 목표로, 기본기와 자기주도성이 매우 탄탄한 학생입니다. 지금 필요한 것은 진도 자체가 아니라 <strong>응용·심화력</strong>과 <strong>방학마다의 전략적 집중</strong>입니다.</p>
+    <p>그래서 <strong>진도는 학원, 응용·심화·경시는 꾸그</strong>로 역할을 나누고, 방학마다 중등 총정리 → 고등 선행 → 비교과(탐구대회)를 단계적으로 얹는 로드맵을 제안합니다. 이미 상위 수준인 <strong>영어는 비중을 줄여</strong> 그 시간을 수학·과학에 집중합니다.</p>
+    <p class="first"><strong>가장 먼저 시작하기 좋은 것</strong> — 이번 여름방학의 과학 중등 총정리(엑소쌤 중1 과학) 한 가지와 영어 개념 문법 특강 한 가지입니다.</p>
+  </div>
+
+  <nav class="toc">
+    <p>목차</p>
+    <ol>
+      <li><a href="#s1"><span class="n">01</span><span>상담 요약</span></a></li>
+      <li><a href="#s2"><span class="n">02</span><span>학습 현황</span></a></li>
+      <li><a href="#s3"><span class="n">03</span><span>핵심 니즈</span></a></li>
+      <li><a href="#s4"><span class="n">04</span><span>솔루션 (로드맵·수학·과학·영어)</span></a></li>
+      <li><a href="#s5"><span class="n">05</span><span>다음 단계</span></a></li>
+    </ol>
+  </nav>
+
+  <section id="s1">
+    <p class="eyebrow"><span class="num">01</span><span>상담 요약</span></p>
+    <h2>상담 요약</h2>
+    <p>민섭이는 영재고를 기준으로 입시를 준비하고 있습니다. 학원에서는 수학 선행을 빠르게 이어가 현재 중3-1 과정을 나가고 있고, 이어서 고등 수학(공통수학~미적분)까지 진도 중심으로 커리큘럼을 따르고 있는데, 민섭이 본인과 어머님은 진도보다 <strong>깊이 있는 심화</strong>를 더 원하셔서 '진도와 심화의 균형'이 이번 상담의 출발점이었습니다.</p>
+    <p>상담에서는 세 가지를 함께 정리했습니다. 첫째, 수학·과학의 진도와 심화를 어떻게 나눌지. 둘째, 좋아하던 꾸그 수업이 학원 시간과 겹쳐 중단된 문제를 어떻게 풀지. 셋째, 민섭이가 스스로 원한 <strong>영어 문법 정리</strong>를 어떤 수준으로 시작할지입니다.</p>
+  </section>
+
+  <section id="s2">
+    <p class="eyebrow"><span class="num">02</span><span>학습 현황</span></p>
+    <h2>학습 현황</h2>
+    <div class="cols">
+      <div class="card">
+        <h3>이미 갖춰진 강점</h3>
+        <ul class="clean">
+          <li><strong>탄탄한 기본기</strong> — 블랙라벨(최고난도)은 어려워하지만 일품·고쟁이 수준은 수월하게 풀고, 일품 정답률이 60~70%로 우수합니다.</li>
+          <li><strong>자기주도성과 메타인지</strong> — 부족한 지점(문법 정리 등)을 스스로 파악하고 보완하려는 의지가 강합니다.</li>
+          <li><strong>비교과 경험</strong> — 학교 수학·과학 융합 동아리 활동, 과학 토론 대회 수상 경험이 있습니다.</li>
+          <li><strong>안정적인 영어</strong> — 원어민 환경에서 쌓아 이미 고등 상위 수준으로, 지금 집중하지 않아도 되는 강점입니다.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>보완이 필요한 부분</h3>
+        <ul class="clean">
+          <li><strong>응용·심화력</strong> — 선행을 빠르게 뺀 학생들이 공통으로 겪는, 한 문제를 오래 붙잡고 끝까지 풀어내는 경험이 부족합니다.</li>
+          <li><strong>학습량 배분</strong> — 준비할 영역이 많은 만큼, 방학마다 우선순위를 정해 한두 가지에 집중하는 조절이 필요합니다. (영어 문법의 개념 정리는 여름에 한 번이면 충분)</li>
+          <li><strong>중등 과학 교과</strong> — 영재원이 융합·비교과 중심이라, 중등 교과 정리는 별도로 잡아야 합니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3">
+    <p class="eyebrow"><span class="num">03</span><span>핵심 니즈</span></p>
+    <h2>핵심 니즈</h2>
+    <div class="needs">
+      <div class="need">
+        <div class="idx">1</div>
+        <div>
+          <h3>진도와 심화의 역할 분담</h3>
+          <p>진도는 학원에서 이어가고, 응용·심화는 꾸그에서 적은 시간으로 보완합니다. 시간이 맞지 않을 때는 가정에서 소량의 문제를 오래 집중해 푸는 경험으로 대체합니다.</p>
+        </div>
+      </div>
+      <div class="need">
+        <div class="idx">2</div>
+        <div>
+          <h3>방학 단위의 전략적 집중</h3>
+          <p>학기 중에는 학원 진도를 유지하고, 방학마다 중등 총정리 → 고등 선행 → 비교과(탐구대회)를 단계적으로 얹어 영재고 준비의 밀도를 높입니다.</p>
+        </div>
+      </div>
+      <div class="need">
+        <div class="idx">3</div>
+        <div>
+          <h3>영어는 유지, 시간은 수학·과학으로</h3>
+          <p>영어는 이미 상위 수준이고 영재고 지필과도 무관하므로, 이번 여름에 문법만 한 번 정리한 뒤 학기 중에는 주 1회로 줄입니다(폴리 어학원 정리). 남는 시간은 수학·과학에 집중합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4">
+    <p class="eyebrow"><span class="num">04</span><span>솔루션</span></p>
+    <h2>솔루션</h2>
+    <p>영재고 준비라는 큰 목표를 <strong>방학 단위 로드맵</strong>으로 먼저 그리고, 과목별 구체 방안을 이어서 안내합니다.</p>
+
+    <div class="solve">
+      <h3><span class="tagn">04-1</span><span>로드맵</span></h3>
+      <p class="intro">가로축은 학년·학기·방학 단위의 시간 흐름이고, 세로는 수학(학원·꾸그)·과학(학습·비교과)·영어·입시 트랙입니다. 먼저 <strong>왜 이렇게 짜야 하는지</strong>를 영재고 입시 구조에 비추어 설명드립니다.</p>
+
+      <p>영재고(영재학교) 입시는 <span class="cite">1단계 서류(생활기록부·자기소개서), 2단계 수학·과학 지필(영재성·창의적 문제해결력 평가), 3단계 캠프(실험 설계·수행과 보고서 작성, 토론·면접)의 세 단계로 진행</span>됩니다. 2027학년도 기준으로 <span class="cite">원서접수·자기소개서는 5월, 2단계 지필은 7월 초, 3단계 캠프는 8월(합격 발표 8월 말)</span>로, 다른 고입보다 훨씬 이릅니다. 반면 <span class="cite">과학고는 8월 중순 이후 원서접수를 시작해 가을에 전형이 진행</span>되어 영재고보다 늦습니다. 즉 준비의 실질적 마감은 <strong>중3 1학기(늦어도 5월)</strong>이므로, 그 전까지 역량과 활동을 쌓아 두어야 합니다. 이 이른 일정이 로드맵의 뼈대입니다.</p>
+
+      <p><strong>① 진도는 학원, 응용·심화는 꾸그로 나누는 이유.</strong> 2단계 지필은 결국 수학·과학 실력이 좌우하고 이 부분은 학원 진도가 효율적입니다. 다만 영재고는 <span class="cite">단순 성적 우수자가 아니라 탐구·사고력형 인재를 뽑고, 문제 풀이 중심 학습을 사고력 중심으로 전환</span>할 것을 요구합니다. 민섭이는 기본기가 탄탄한 대신 '한 문제를 오래 붙잡는' 응용·심화 경험이 약하다는 점이 상담에서 확인됐으므로, 진도는 학원에서 이어가되 부족한 부분은 꾸그의 소수 심화 수업과 가정 집중 풀이로 채웁니다.</p>
+
+      <p><strong>② 방학마다 과학 총정리 + 고등 선행을 얹는 이유.</strong> 2단계 지필은 수학·과학 전 범위를 넓게 다룹니다. 민섭이는 영재원이 융합 중심이라 중등 교과 정리가 비어 있으므로, 이번 여름방학에 교과를 총정리해 두는 것이 안전합니다. 고등 선행은 현재 중3-1을 선행 중인 흐름을 이어, <strong>중1 겨울 → 중2 여름 → 중2 겨울</strong> 방학마다 단계적으로 올립니다.</p>
+
+      <p><strong>③ 비교과(탐구·실험·연구)를 중1부터 쌓는 이유.</strong> <span class="cite">3단계 캠프가 실험 설계·수행, 결과 보고서 작성, 토론 중심으로 진행되어 평소의 탐구 활동 경험이 핵심</span>이고, <span class="cite">서류의 세부능력·특기사항과 자기소개서에서도 교내외 과학 대회·탐구 경험을 중요하게</span> 봅니다. 특히 토론 대회도 좋지만, 영재고는 <strong>'무기 과목'(자신 있는 한 분야)을 만들어 그 영역을 깊이 파고든 심화 연구가 있었는지, 직접 실험을 설계·수행한 경험이 있는지</strong>를 비중 있게 평가합니다. 상담에서도 좋아하는 분야를 집요하게 파고드는 경험의 중요성이 언급된 만큼, 토론에 더해 <strong>실험·탐구/연구 대회</strong>까지 포함해 준비하는 것이 좋습니다. 다만 실험 설계나 연구 보고서 작성은 현실적으로 혼자 준비하기 어렵기 때문에, 꾸그에서 <strong>주 1회 정도의 대회·탐구 준비 수업</strong>으로 꾸준히 다지길 권합니다. 참고로 <span class="cite">자기소개서에는 교외 수상·올림피아드·인증시험 실적을 직접 쓸 수 없어</span>, 올림피아드는 '스펙'이 아니라 2단계 지필의 사고력을 기르는 훈련으로 의미가 있습니다. 민섭이는 이미 과학 토론 대회 경험이 있으니, 중1 겨울 대회·탐구 준비 → 중2 실전 참여로 자연스럽게 이어집니다.</p>
+
+      <p><strong>④ 중2가 분기점인 이유.</strong> <span class="cite">영재고는 중학교 조기졸업으로 중2도 지원할 수 있어</span>, 중2에 한 번 실전을 경험하고 중3에 자기소개서·캠프를 본격 준비하는 흐름이 자연스럽습니다.</p>
+
+      <p><strong>⑤ 영어 비중을 줄이는 이유.</strong> 영재고 2단계 지필은 수학·과학만 평가하므로, 이미 상위권인 영어는 이번 여름방학에 문법을 한 번 정리한 뒤 학기 중에는 주 1회로 줄이고, 그 시간을 수학·과학에 집중하는 것이 전략적으로 유리합니다. (상세는 04-4)</p>
+
+      <div class="rmapwrap">
+        <div class="rmap">
+          <div class="cnr">트랙 &nbsp;→&nbsp; 시간</div>
+          <div class="yr" style="grid-column:span 3">중1</div>
+          <div class="yr" style="grid-column:span 2">중2</div>
+          <div class="yr" style="grid-column:span 1">중3</div>
+          <div class="term">여름방학<br>(지금)</div>
+          <div class="term">2학기</div>
+          <div class="term">겨울방학</div>
+          <div class="term">여름방학</div>
+          <div class="term">겨울방학</div>
+          <div class="term">입시</div>
+
+          <div class="lane t-math"><span class="s">수학</span><span class="u">학원</span></div>
+          <div class="cl">중등 진도 (중3-1)</div>
+          <div class="cl">중등 마무리</div>
+          <div class="cl">고등 공통수학 선행 시작</div>
+          <div class="cl">고등수학 선행</div>
+          <div class="cl">고등수학 선행·심화</div>
+          <div class="cl">고등 심화 + 기출</div>
+
+          <div class="lane t-math"><span class="s">수학</span><span class="u">꾸그</span></div>
+          <div class="cl">중2 과정 심화 보완</div>
+          <div class="cl">심화 보완 유지</div>
+          <div class="cl">경시 사고력 입문 (KJMO 등)</div>
+          <div class="cl">KMO·경시 사고력</div>
+          <div class="cl">경시·기출 심화</div>
+          <div class="cl">2단계 지필 대비</div>
+
+          <div class="lane t-sci"><span class="s">과학</span><span class="u">학습</span></div>
+          <div class="cl">중등 교과 총정리 시작</div>
+          <div class="cl">교과 총정리 유지</div>
+          <div class="cl">고등 과학 선행 시작</div>
+          <div class="cl">고등 과학 선행</div>
+          <div class="cl">고등 선행 심화</div>
+          <div class="cl">2단계 지필 대비·기출</div>
+
+          <div class="lane t-sci"><span class="s">과학</span><span class="u">비교과</span></div>
+          <div class="cl">학교 동아리·토론 유지</div>
+          <div class="cl">교내 대회 참여</div>
+          <div class="cl">탐구대회 준비 수업 (주 1회)</div>
+          <div class="cl">대회 실전 + 실험 보고서</div>
+          <div class="cl">연구·보고서 정리</div>
+          <div class="cl">3단계 캠프(실험·토론) 대비</div>
+
+          <div class="lane t-eng"><span class="s">영어</span></div>
+          <div class="cl">문법 정리 (특강)</div>
+          <div class="cl">주 1회로 축소 유지</div>
+          <div class="cl">주 1회 유지</div>
+          <div class="cl">주 1회 유지 (독해)</div>
+          <div class="cl">유지 / 필요 시 수능형</div>
+          <div class="cl">합격 후 본격 보완</div>
+
+          <div class="lane t-adm"><span class="s">입시</span></div>
+          <div class="mut">—</div>
+          <div class="cl">영재고 정보 파악</div>
+          <div class="cl">목표·전형 구체화</div>
+          <div class="cl">중2 조기지원 검토·모의 경험</div>
+          <div class="cl">자소서·생기부 정리</div>
+          <div class="cl">원서·2단계 지필·3단계 캠프</div>
+        </div>
+      </div>
+      <p class="rmap-note">※ 학기 중(2학기·1학기)에는 학원 진도가 이어지고, 위 항목은 방학마다 집중해서 얹는 구성입니다. 중3 단계는 상담 범위 밖의 방향성 안내이며, 실제 전형 일정·방법은 지원 학교의 모집요강에서 확인해 주세요.</p>
+    </div>
+
+    <div class="solve">
+      <h3><span class="tagn">04-2</span><span>수학 학습 방안</span></h3>
+      <p class="intro"><strong>진도는 학원, 심화·경시는 꾸그</strong>로 나눕니다. 현재 수학은 중3-1 과정을 선행 중이므로, 그보다 한 단계 아래인 <strong>중2 과정</strong>을 꾸그에서 고난도·응용 위주로 다지면 진도를 멈추지 않으면서도 부족한 응용·심화력을 채울 수 있습니다. 아래 세 수업(중2-1)은 이번 여름방학의 심화 보완용입니다.</p>
+      <div class="classlist">
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/teacher/54dd2c65-d74b-495a-a45e-b5e52304d648.jpeg.webp" alt="에이급 수학 중2-1 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">구독 · 심화 보완</p>
+            <h4>상위 1% 공부비법 에이급 수학 (중2-1)</h4>
+            <div class="metaline"><span class="teacher">임지우 선생님</span><span class="rating"><span class="starglyph">★</span>5.0<span class="rc">리뷰 1</span></span><span class="slot ok">신청 가능</span><span class="stats">구독 · 15세 · 선생님 ★5.0·리뷰 2,079</span></div>
+            <p class="sched"><b>일정</b><span>매주 일 17:00</span></p>
+            <p class="feat">에이급 교재로 유연한 논리 사고력과 종합적 문제해결력을 키우는 심화 수업입니다. 선행한 내용을 더 깊게 다지고 싶을 때 적합합니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/14608" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/teacher/55de189f-5854-4603-8487-1d7215e94ece.jpeg.webp" alt="APS 중2-1 블랙라벨 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">구독 · 최고난도</p>
+            <h4>문제해결의 기술(APS) 중2-1 : 고난도 문제 해결 (블랙라벨)</h4>
+            <div class="metaline"><span class="teacher">구자익 선생님</span><span class="newbadge">신규</span><span class="slot ok">신청 가능</span><span class="stats">구독 · 11~14세 · 선생님 ★5.0·리뷰 155</span></div>
+            <p class="sched"><b>일정</b><span>수요일 오후 6시</span></p>
+            <p class="feat">블랙라벨 수준 고난도 문제의 '푸는 기술'을 제대로 익히는 수업입니다. 최고난도 문제를 끝까지 풀어내는 경험을 늘리기 좋습니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/15879" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/teacher/4529b50a-9584-46e9-9f61-0e1ad72a7dca.jpeg.webp" alt="완전 중학수학 2-1 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">구독 · 응용·추론</p>
+            <h4>완전 중학수학 시리즈 : 중2-1 문제 풀이 (응용) · 논리와 추론</h4>
+            <div class="metaline"><span class="teacher">구자익 선생님</span><span class="newbadge">신규</span><span class="slot ok">신청 가능</span><span class="stats">구독 · 11~13세 · 교재 쎈수학 · 선생님 ★5.0·리뷰 155</span></div>
+            <p class="sched"><b>일정</b><span>토요일 오후 12시</span></p>
+            <p class="feat">문제를 스스로 분석하고 풀이 계획을 세우는 힘을 기르는 응용·추론 중심 수업입니다. 블랙라벨보다 한 단계 아래에서 응용력을 다질 때 좋습니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/15875" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>수업</th><th>선생님</th><th>평점·리뷰</th><th>형태</th><th>스케줄</th><th>이런 경우</th></tr></thead>
+          <tbody>
+            <tr><td>에이급 수학 중2-1</td><td>임지우</td><td>★5.0 · 1 <span class="mut2">(쌤 2,079)</span></td><td>구독</td><td>신청 가능</td><td>종합적 문제해결력 심화</td></tr>
+            <tr><td>APS 중2-1 (블랙라벨)</td><td>구자익</td><td>신규 <span class="mut2">(쌤 ★5.0·155)</span></td><td>구독</td><td>수요일 오후 6시</td><td>최고난도 문제 훈련</td></tr>
+            <tr><td>완전 중학수학 2-1 응용</td><td>구자익</td><td>신규 <span class="mut2">(쌤 ★5.0·155)</span></td><td>구독</td><td>토요일 오후 12시</td><td>응용·추론 다지기</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="reco"><b>추천</b>&nbsp; 먼저 에이급 수학으로 심화 감각을 잡고, 최고난도 훈련이 필요하면 APS(블랙라벨)를 더하시길 권합니다. 세 수업 모두 구독으로 바로 신청할 수 있습니다. 중1 겨울방학부터는 꾸그의 <b>경시 사고력 라인(KJMO 기출반 등)</b>으로 넘어가 KMO·경시 준비를 이어갈 수 있습니다.</p>
+    </div>
+
+    <div class="solve">
+      <h3><span class="tagn">04-3</span><span>과학 학습 방안</span></h3>
+      <p class="intro">과학은 <strong>학습(교과)</strong>과 <strong>비교과(대회)</strong>로 나눕니다. 영재원이 융합·비교과 중심이라, 중등 과학 교과는 이번 여름방학에 총정리로 잡아 두는 것이 좋습니다. 중1 겨울부터는 고등 선행과 함께 탐구대회 준비를 시작하고, 중2에는 실제 대회에 참여합니다.</p>
+      <div class="classlist">
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/product/a1c29384-38d5-47c9-8d9a-6020d896cb9b.png.webp" alt="엑소쌤 중1 과학 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">구독 · 중등 교과</p>
+            <h4>[영과고까지 대비] 엑소쌤 중1 과학 : 영재원 및 중학교 대비반</h4>
+            <div class="metaline"><span class="teacher">엑소쌤</span><span class="rating"><span class="starglyph">★</span>5.0<span class="rc">리뷰 1,753</span></span><span class="slot ok">신청 가능</span><span class="stats">구독 · 10~14세</span></div>
+            <p class="sched"><b>일정</b><span>반 선택: 수 19:00 · 토 07:00 · 월 21:00</span></p>
+            <p class="feat">예비중·중1과 영재원 준비 학생을 위한 중1 교과 과학 수업입니다. 리뷰 1,700건이 넘는 대표 수업으로, 교과 총정리의 축으로 삼기 좋습니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/9167" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/product/ce223610-ad67-4ce4-a918-66711d75f02a.png.webp" alt="엑소쌤 중등 모닝클래스 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">구독 · 전범위 총정리</p>
+            <h4>엑소쌤 중등 모닝클래스 : 중등과학 전범위 개념+문제풀이</h4>
+            <div class="metaline"><span class="teacher">엑소쌤</span><span class="rating"><span class="starglyph">★</span>5.0<span class="rc">리뷰 107</span></span><span class="slot ok">신청 가능</span><span class="stats">구독 · 30분 · 11~14세</span></div>
+            <p class="sched"><b>일정</b><span>스케줄 오픈 예정 — 신청 페이지에서 확인</span></p>
+            <p class="feat">중1·2·3 전 범위를 하루 30분 개념+문제풀이로 잇는 총정리 수업입니다. 아침 루틴으로 꾸준히 이어가기에도 좋습니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/14257" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/teacher/d3370d43-d484-4f39-9355-c8b058489a82.jpeg.webp" alt="물리 Start-Up 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">다회차 · 물리 압축</p>
+            <h4>[여름방학 특강] 물리 Start-Up! 중등 물리 핵심 6회 압축 완성반</h4>
+            <div class="metaline"><span class="teacher">과학만렙 김쌤</span><span class="newbadge">신규</span><span class="slot req">스케줄 요청하기 필요</span><span class="stats">6회 특강 · 12~13세 · 선생님 ★5.0·리뷰 50</span></div>
+            <p class="sched"><b>일정</b><span>스케줄 요청 필요 (신청 페이지에서 요청)</span></p>
+            <p class="feat">중등 1~3학년 물리 핵심(힘·운동·전기·자기·에너지)을 원리 중심으로 6회에 압축 정리합니다. 물리를 한 번에 잡고 싶을 때 좋습니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/15594" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/teacher/98bfed6c-676f-4a9a-b898-d0f52b1a2d19.png.webp" alt="물화생지 계통별 중등과학 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">다회차 · 계통별 총정리</p>
+            <h4>물화생지 계통별 중등과학 개념+문제풀이반</h4>
+            <div class="metaline"><span class="teacher">박진국 선생님</span><span class="newbadge">신규</span><span class="slot req">개설 요청 필요</span><span class="stats">다회차 · 12~13세 · 선생님 ★4.8·리뷰 245</span></div>
+            <p class="sched"><b>일정</b><span>스케줄 요청하기</span></p>
+            <p class="feat">물리·화학·생물·지구과학을 계통별로 나눠 개념과 문제풀이를 함께 진행합니다. 중등 과학 전 영역을 빠르게 총정리할 때 좋습니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/12475" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/teacher/2a22b27a-a24d-45ac-bc1b-6c4552edeb4d.png.webp" alt="과학대회대비 초급 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">다회차 · 대회 준비</p>
+            <h4>[영과고까지 대비] 과학대회대비 수업 초급 (14~15세반)</h4>
+            <div class="metaline"><span class="teacher">박진국 선생님</span><span class="newbadge">신규</span><span class="slot req">개설 요청 필요</span><span class="stats">다회차 · 14~15세 · 선생님 ★4.8·리뷰 245</span></div>
+            <p class="sched"><b>일정</b><span>스케줄 요청하기</span></p>
+            <p class="feat">발명대회·과학토론대회·탐구대회의 구조와 요구 역량을 체계적으로 익히는 대회 준비 수업입니다. 실험 설계·탐구 경험을 주 1회로 꾸준히 쌓기 좋습니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/10031" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+      </div>
+      <div class="callout">
+        <p class="lead">전문가 상담 — 대치 MSG 원장 (전진홍 선생님)</p>
+        <p>대치 MSG 영재교육학원 원장이자 영재원·과학고 준비 전문가입니다. 정규 수업 외에 프라이빗 클래스도 개설해 주시므로, 비대면 상담이라도 한번 받아 전체 전략을 점검해 보시길 권합니다. <a href="https://www.gguge.com/ko/teacher/6666" target="_blank" rel="noopener">선생님 프로필 보기</a></p>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>수업</th><th>선생님</th><th>평점·리뷰</th><th>단계</th><th>스케줄</th><th>이런 경우</th></tr></thead>
+          <tbody>
+            <tr><td>엑소쌤 중1 과학 (영재원·중학 대비)</td><td>엑소쌤</td><td>★5.0 · 1,753</td><td>1 · 교과</td><td>신청 가능</td><td>중등 교과 총정리의 축</td></tr>
+            <tr><td>엑소쌤 중등 모닝클래스</td><td>엑소쌤</td><td>★5.0 · 107</td><td>1 · 교과</td><td>신청 가능</td><td>전범위 개념+문풀, 아침 루틴</td></tr>
+            <tr><td>물리 Start-Up 6회 압축</td><td>과학만렙 김쌤</td><td>신규 <span class="mut2">(쌤 ★5.0·50)</span></td><td>1 · 교과</td><td>스케줄 요청하기</td><td>물리만 빠르게 정리</td></tr>
+            <tr><td>물화생지 계통별 중등과학</td><td>박진국</td><td>신규 <span class="mut2">(쌤 ★4.8·245)</span></td><td>1 · 교과</td><td>개설 요청</td><td>계통별 총정리</td></tr>
+            <tr><td>과학대회대비 초급 (14~15세)</td><td>박진국</td><td>신규 <span class="mut2">(쌤 ★4.8·245)</span></td><td>2 · 대회</td><td>개설 요청</td><td>무기 과목·실험 설계 (주 1회)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="reco"><b>추천</b>&nbsp; 이번 여름방학은 <b>엑소쌤 중1 과학</b>을 축으로 중등 교과를 총정리하고, 필요하면 물리 Start-Up·물화생지로 영역을 보강하세요. 중1 겨울부터는 <b>'무기 과목'을 정해 실험 설계·연구·탐구대회를 준비하는 수업을 주 1회 정도 꾸준히</b> 들으며 비교과를 쌓고, 큰 전략은 대치 MSG 원장님 상담으로 한번 점검하시길 권합니다.</p>
+    </div>
+
+    <div class="solve">
+      <h3><span class="tagn">04-4</span><span>영어 학습 방안</span></h3>
+      <p class="intro">민섭이의 영어는 이미 고등 상위 수준으로 안정적입니다. 영재고 2단계 지필이 수학·과학만 평가하는 만큼, 지금은 <strong>영어 비중을 줄여 수학·과학에 집중</strong>하는 편이 전략적으로 유리합니다. 그래서 <strong>이번 여름방학에 문법을 한 번 정리</strong>하고, 학기 중에는 <strong>폴리 어학원을 정리한 뒤 주 1회 정도 꾸그 수업으로 감각만 유지</strong>하는 구성을 제안합니다. 영어 보완은 영재고 합격 이후에 더 채워도 늦지 않습니다.</p>
+
+      <p style="font-weight:700;margin:20px 0 4px;font-size:15px">이번 여름방학 · 문법 정리 (한 번)</p>
+      <div class="classlist">
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/product/a6c07c28-83c8-40f9-a9ec-21075e4dd324.png.webp" alt="원리로 이해하는 문법 기본편 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">다회차 · 방학 특강</p>
+            <h4>[여름방학 특강] 원리로 이해하는 문법 기본편 (레벨테스트 무상 제공)</h4>
+            <div class="metaline"><span class="teacher">노성주 선생님</span><span class="newbadge">신규</span><span class="slot ok">신청 가능</span><span class="stats">5회 특강 · 13~15세 · 선생님 ★4.9·리뷰 430</span></div>
+            <p class="sched"><b>일정</b><span>평일(월~금) 12:00 또는 16:00 회차</span></p>
+            <p class="feat">문법을 규칙이 아닌 '원리'로 이해하도록 돕는 특강입니다. 넬트(NELT) 온라인 레벨테스트를 무상 제공해 시작 수준을 확인할 수 있어, 감으로 풀던 문법의 근거를 한 번에 정리하기 좋습니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/15716" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/product/52840ce3-8ef1-4ce5-ab30-1758efac24ee.png.webp" alt="중등 문법 마스터반 4회 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">다회차 · 단기 완성 (대안)</p>
+            <h4>[여름방학 특강] 무조건 알아야 할 중등 문법 마스터반 (4회 완성)</h4>
+            <div class="metaline"><span class="teacher">Anne 선생님</span><span class="newbadge">신규</span><span class="slot ok">신청 가능</span><span class="stats">4회 완성 · 14~16세 · 교재 3800제 · 선생님 ★5.0·리뷰 163</span></div>
+            <p class="sched"><b>일정</b><span>일요일 09:50 / 11:30 (택1)</span></p>
+            <p class="feat">중학영문법 3800제로 핵심 문법을 4회에 압축 정리하고 서술형까지 대비하는 단기 특강입니다. 더 짧게 끝내고 싶을 때의 대안입니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/15732" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+      </div>
+
+      <p style="font-weight:700;margin:24px 0 4px;font-size:15px">학기 중 · 주 1회로 감각 유지 (폴리 대체)</p>
+      <div class="classlist">
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/teacher/98c051b7-9957-4ef8-a255-f71938dc23c5.jpeg.webp" alt="Wonderskills 리딩 Advanced 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">구독 · 현재 수준 유지</p>
+            <h4>정독법 Reading + Summary + Retelling : Wonderskills 리딩 (Advanced)</h4>
+            <div class="metaline"><span class="teacher">SEL영어Lucy쌤</span><span class="rating"><span class="starglyph">★</span>5.0<span class="rc">리뷰 41</span></span><span class="slot ok">신청 가능</span><span class="stats">구독 · 11~15세</span></div>
+            <p class="sched"><b>일정</b><span>일 10:20 / 목 20:20 (반 선택)</span></p>
+            <p class="feat">미국교과서 Wonders 기반 교재로 정독하고 요약·리텔링까지 하는 수업입니다. 원어민 환경에서 쌓은 현재 실력을 학기 중 주 1회로 유지·심화하기 좋습니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/7969" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/teacher/daae70b9-dea0-46ce-a457-8638b943f266.png.webp" alt="영어필독서 완독 Animal Farm 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">구독 · 현재 수준 유지</p>
+            <h4>중등 영어필독서 완독 클럽 : Animal Farm</h4>
+            <div class="metaline"><span class="teacher">김혜원 선생님</span><span class="rating"><span class="starglyph">★</span>5.0<span class="rc">리뷰 6</span></span><span class="slot ok">신청 가능</span><span class="stats">구독 · 120분 · 14~16세 · 선생님 ★5.0·리뷰 154</span></div>
+            <p class="sched"><b>일정</b><span>매주 화 16:00</span></p>
+            <p class="feat">20년 경력 번역가 선생님과 대치동 영어원서 독해법으로 중·고등 필독서를 한 문장씩 정독·완독합니다. 원서 독해력을 살아 있게 유지하고 싶을 때 좋습니다.</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/9115" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+        <article class="classcard">
+          <img class="thumb" src="https://i1.gguge.com/r/product/bb348e95-f30b-4dff-8f0b-6a54f05b4c98.png.webp" alt="수능형 독해 입문 썸네일" loading="lazy">
+          <div class="body">
+            <p class="role">구독 · 수능 대비 병행</p>
+            <h4>수능형 독해 입문 : 유형별 풀이로 확실한 방향 잡기</h4>
+            <div class="metaline"><span class="teacher">Blair 선생님</span><span class="newbadge">신규</span><span class="slot ok">신청 가능</span><span class="stats">구독 · 15~17세</span></div>
+            <p class="sched"><b>일정</b><span>토요일 오전 11시 · 오후 8:30</span></p>
+            <p class="feat">고등·수능 영어 독해의 유형별 접근법을 잡는 브릿지 과정입니다. 감이 아닌 근거로 읽는 훈련이라, 수능까지 함께 내다보고 싶을 때의 선택지입니다(대상 연령은 다소 상향).</p>
+            <div class="btnrow"><a class="btn" href="https://www.gguge.com/ko/product/15899" target="_blank" rel="noopener">수업 보러가기</a></div>
+          </div>
+        </article>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>수업</th><th>선생님</th><th>평점·리뷰</th><th>구분</th><th>스케줄</th><th>이런 경우</th></tr></thead>
+          <tbody>
+            <tr><td>원리로 이해하는 문법 기본편</td><td>노성주</td><td>신규 <span class="mut2">(쌤 ★4.9·430)</span></td><td>여름 · 문법 정리</td><td>신청 가능</td><td>문법 근거를 한 번에 정리</td></tr>
+            <tr><td>중등 문법 마스터반 (4회)</td><td>Anne</td><td>신규 <span class="mut2">(쌤 ★5.0·163)</span></td><td>여름 · 단기 대안</td><td>신청 가능</td><td>더 짧게 끝내고 싶을 때</td></tr>
+            <tr><td>Wonderskills 리딩 (Advanced)</td><td>SEL영어Lucy쌤</td><td>★5.0 · 41</td><td>학기 · 유지</td><td>신청 가능</td><td>정독·요약으로 실력 유지</td></tr>
+            <tr><td>영어필독서 완독 (Animal Farm)</td><td>김혜원</td><td>★5.0 · 6</td><td>학기 · 유지</td><td>신청 가능</td><td>원서 독해력 유지</td></tr>
+            <tr><td>수능형 독해 입문</td><td>Blair</td><td>신규 <span class="mut2">(쌤 5.0)</span></td><td>학기 · 수능 대비</td><td>토요일 오전 11시 · 오후 8:30</td><td>수능까지 내다볼 때</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="reco"><b>추천</b>&nbsp; 이번 여름에는 <b>원리로 이해하는 문법</b>으로 개념을 한 번 정리하고, 학기 중에는 폴리 어학원을 정리한 뒤 <b>주 1회</b> 읽기 수업(Wonderskills 또는 필독서 완독)으로 감각만 유지하시길 권합니다. 수능까지 함께 보고 싶다면 수능형 독해 입문을 더하면 됩니다. 남는 시간은 수학·과학에 집중합니다.</p>
+    </div>
+  </section>
+
+  <section id="s5">
+    <div class="nextstep">
+      <p class="eyebrow"><span class="num">05</span><span>다음 단계</span></p>
+      <h2>다음 단계</h2>
+      <p>처음부터 모든 것을 시작하기보다, 이번 여름방학에는 <strong>과학 중등 총정리(엑소쌤 중1 과학) 한 가지</strong>와 <strong>영어 개념 문법 특강 한 가지</strong>로 가볍게 시작하시길 권합니다. 수학 심화는 신청 가능한 에이급 수학부터 얹으면 좋습니다.</p>
+      <p><strong>개설 요청이 필요한 수업</strong>(APS 블랙라벨, 물화생지 계통별, 과학대회대비, 예비중 영문법 L1)은 신청 페이지에서 개설을 요청해 주세요. 큰 전략은 <strong>대치 MSG 전진홍 원장님</strong>께 비대면 상담으로 한번 점검해 보시길 권합니다.</p>
+      <p>이 외에도 궁금한 점 있으시다면 상담 때 안내드린 번호로 언제든 편하게 문자 주세요.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>표기된 평점, 리뷰 수, 시간대, 스케줄 상태는 리포트 작성 시점 기준이며, 개설 일정과 신청 가능 여부는 각 수업의 신청 페이지에서 다시 확인해 주세요. 교재는 시중 도서로 최신 개정판 기준으로 확인하시면 됩니다. 비교표의 '신규'는 새로 개설되어 수업 자체 후기가 아직 적다는 뜻이며, '쌤 ★평점·리뷰'는 담당 선생님의 누적 평점·리뷰 수를 표시한 것입니다.</p>
+    <p>로드맵 설명의 영재고·과학고 전형 구조(서류·지필·캠프, 일정, 조기지원 등)는 공개된 입시 안내 자료를 참고했으며, 전형 방법과 일정은 매년 학교별로 달라지므로 지원 학교의 모집요강을 반드시 확인해 주세요.</p>
+    <p>본 리포트는 이병화 학부모님과의 학습 상담 내용을 바탕으로 작성되었습니다. 꾸그 학습 상담 · 상담사 김예은</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
